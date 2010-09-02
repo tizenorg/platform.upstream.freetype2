@@ -1,0 +1,33 @@
+freetype (2.3.5-5slp2) unstable; urgency=low
+
+  * Change maintainer
+
+ -- Jihoon Kim <jihoon48.kim@samsung.com>  Tue, 20 Apr 2010 11:06:10 +0900
+
+freetype (2.3.5-4slp2) unstable; urgency=low
+
+  * Change revision
+
+ -- Sung-Jin Park <sj76.park@samsung.com>  Thu, 25 Mar 2010 19:34:16 +0900
+
+freetype (2.3.5-3) unstable; urgency=low
+
+  [ Kyu Young Kim ]
+  * modify debian files
+
+  [ root ]
+  * -
+
+ -- root <root@input-desktop>  Thu, 25 Mar 2010 19:34:13 +0900
+
+freetype (2.3.5-2) unstable; urgency=low
+
+  * install modify
+
+ -- Kyu Young Kim <ky0928.kim@samsung.com>  Thu, 12 Nov 2009 15:45:39 +0900
+
+freetype (2.3.5) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Kyu Young Kim <ky0928.kim@samsung.com>  Thu, 12 Nov 2009 13:27:46 +0900
