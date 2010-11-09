@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    FreeType font driver for Windows FNT/FON files                       */
 /*                                                                         */
-/*  Copyright 1996-2001, 2002, 2003, 2004, 2006, 2007 by                   */
+/*  Copyright 1996-2001, 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 by */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*  Copyright 2003 Huw D M Davies for Codeweavers                          */
 /*  Copyright 2007 Dmitry Timoshkov for Codeweavers                        */
@@ -23,6 +23,7 @@
 #include FT_INTERNAL_DEBUG_H
 #include FT_INTERNAL_STREAM_H
 #include FT_INTERNAL_OBJECTS_H
+#include FT_TRUETYPE_IDS_H 
 
 #include "winfnt.h"
 #include "fnterrs.h"
@@ -342,7 +343,7 @@
 
         if ( !font_count || !font_offset )
         {
-          FT_TRACE2(( "this file doesn't contain any FNT resources!\n" ));
+          FT_TRACE2(( "this file doesn't contain any FNT resources\n" ));
           error = FNT_Err_Invalid_File_Format;
           goto Exit;
         }
@@ -360,9 +361,11 @@
 
         if ( face_index >= font_count )
         {
-          error = FNT_Err_Bad_Argument;
+          error = FNT_Err_Invalid_Argument;
           goto Exit;
         }
+        else if ( face_index < 0 )
+          goto Exit;
 
         if ( FT_NEW( face->font ) )
           goto Exit;
@@ -564,7 +567,7 @@
 
       if ( face_index >= face->root.num_faces )
       {
-        error = FNT_Err_Bad_Argument;
+        error = FNT_Err_Invalid_Argument;
         goto Exit;
       }
     }
@@ -610,13 +613,14 @@
 
     char_code -= cmap->first;
     if ( char_code < cmap->count )
-      gindex = char_code + 1; /* we artificially increase the glyph index; */
-                              /* FNT_Load_Glyph reverts to the right one   */
+      /* we artificially increase the glyph index; */
+      /* FNT_Load_Glyph reverts to the right one   */
+      gindex = (FT_UInt)( char_code + 1 );
     return gindex;
   }
 
 
-  static FT_UInt
+  static FT_UInt32
   fnt_cmap_char_next( FNT_CMap    cmap,
                       FT_UInt32  *pchar_code )
   {
@@ -636,7 +640,7 @@
       if ( char_code < cmap->count )
       {
         result = cmap->first + char_code;
-        gindex = char_code + 1;
+        gindex = (FT_UInt)( char_code + 1 );
       }
     }
 
@@ -652,7 +656,9 @@
     (FT_CMap_InitFunc)     fnt_cmap_init,
     (FT_CMap_DoneFunc)     NULL,
     (FT_CMap_CharIndexFunc)fnt_cmap_char_index,
-    (FT_CMap_CharNextFunc) fnt_cmap_char_next
+    (FT_CMap_CharNextFunc) fnt_cmap_char_next,
+
+    NULL, NULL, NULL, NULL, NULL
   };
 
   static FT_CMap_Class const  fnt_cmap_class = &fnt_cmap_class_rec;
@@ -661,16 +667,18 @@
   static void
   FNT_Face_Done( FNT_Face  face )
   {
-    if ( face )
-    {
-      FT_Memory  memory = FT_FACE_MEMORY( face );
+    FT_Memory  memory;
 
 
-      fnt_font_done( face );
+    if ( !face )
+      return;
 
-      FT_FREE( face->root.available_sizes );
-      face->root.num_fixed_sizes = 0;
-    }
+    memory = FT_FACE_MEMORY( face );
+
+    fnt_font_done( face );
+
+    FT_FREE( face->root.available_sizes );
+    face->root.num_fixed_sizes = 0;
   }
 
 
@@ -690,17 +698,13 @@
 
     /* try to load font from a DLL */
     error = fnt_face_get_dll_font( face, face_index );
+    if ( !error && face_index < 0 )
+      goto Exit;
+
     if ( error == FNT_Err_Unknown_File_Format )
     {
       /* this didn't work; try to load a single FNT font */
       FNT_Font  font;
-
-
-      if ( face_index > 0 )
-      {
-        error = FNT_Err_Bad_Argument;
-        goto Exit;
-      }
 
       if ( FT_NEW( face->font ) )
         goto Exit;
@@ -712,6 +716,14 @@
       font->fnt_size = stream->size;
 
       error = fnt_font_load( font, stream );
+
+      if ( !error )
+      {
+        if ( face_index > 0 )
+          error = FNT_Err_Invalid_Argument;
+        else if ( face_index < 0 )
+          goto Exit;
+      }
     }
 
     if ( error )
@@ -724,6 +736,8 @@
       FNT_Font    font = face->font;
       FT_PtrDist  family_size;
 
+
+      root->face_index = face_index;
 
       root->face_flags = FT_FACE_FLAG_FIXED_SIZES |
                          FT_FACE_FLAG_HORIZONTAL;
@@ -772,7 +786,7 @@
          * => nominal_point_size contains incorrect value;
          *    use pixel_height as the nominal height
          */
-        if ( bsize->y_ppem > font->header.pixel_height << 6 )
+        if ( bsize->y_ppem > ( font->header.pixel_height << 6 ) )
         {
           FT_TRACE2(( "use pixel_height as the nominal height\n" ));
 
@@ -789,15 +803,16 @@
 
 
         charmap.encoding    = FT_ENCODING_NONE;
-        charmap.platform_id = 0;
-        charmap.encoding_id = 0;
+        /* initial platform/encoding should indicate unset status? */
+        charmap.platform_id = TT_PLATFORM_APPLE_UNICODE;
+        charmap.encoding_id = TT_APPLE_ID_DEFAULT;
         charmap.face        = root;
 
         if ( font->header.charset == FT_WinFNT_ID_MAC )
         {
           charmap.encoding    = FT_ENCODING_APPLE_ROMAN;
-          charmap.platform_id = 1;
-/*        charmap.encoding_id = 0; */
+          charmap.platform_id = TT_PLATFORM_MACINTOSH;
+/*        charmap.encoding_id = TT_MAC_ID_ROMAN; */
         }
 
         error = FT_CMap_New( fnt_cmap_class,
@@ -820,7 +835,7 @@
 
       if ( font->header.face_name_offset >= font->header.file_size )
       {
-        FT_TRACE2(( "invalid family name offset!\n" ));
+        FT_TRACE2(( "invalid family name offset\n" ));
         error = FNT_Err_Invalid_File_Format;
         goto Fail;
       }
@@ -901,7 +916,7 @@
     switch ( req->type )
     {
     case FT_SIZE_REQUEST_TYPE_NOMINAL:
-      if ( height == ( bsize->y_ppem + 32 ) >> 6 )
+      if ( height == ( ( bsize->y_ppem + 32 ) >> 6 ) )
         error = FNT_Err_Ok;
       break;
 
@@ -929,7 +944,7 @@
                   FT_Int32      load_flags )
   {
     FNT_Face    face   = (FNT_Face)FT_SIZE_FACE( size );
-    FNT_Font    font   = face->font;
+    FNT_Font    font;
     FT_Error    error  = FNT_Err_Ok;
     FT_Byte*    p;
     FT_Int      len;
@@ -940,7 +955,15 @@
     FT_UNUSED( load_flags );
 
 
-    if ( !face || !font ||
+    if ( !face )
+    {
+      error = FNT_Err_Invalid_Argument;
+      goto Exit;
+    }
+
+    font = face->font;
+
+    if ( !font ||
          glyph_index >= (FT_UInt)( FT_FACE( face )->num_glyphs ) )
     {
       error = FNT_Err_Invalid_Argument;
@@ -967,7 +990,7 @@
 
     if ( offset >= font->header.file_size )
     {
-      FT_TRACE2(( "invalid FNT offset!\n" ));
+      FT_TRACE2(( "invalid FNT offset\n" ));
       error = FNT_Err_Invalid_File_Format;
       goto Exit;
     }

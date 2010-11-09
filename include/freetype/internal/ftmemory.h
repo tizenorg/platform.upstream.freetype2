@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    The FreeType memory management macros (specification).               */
 /*                                                                         */
-/*  Copyright 1996-2001, 2002, 2004, 2005, 2006, 2007 by                   */
+/*  Copyright 1996-2001, 2002, 2004, 2005, 2006, 2007, 2010 by             */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg                       */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -58,15 +58,27 @@ FT_BEGIN_HEADER
 
 
   /*
-   *  C++ refuses to handle statements like p = (void*)anything; where `p'
-   *  is a typed pointer.  Since we don't have a `typeof' operator in
-   *  standard C++, we have to use ugly casts.
+   *  C++ refuses to handle statements like p = (void*)anything, with `p' a
+   *  typed pointer.  Since we don't have a `typeof' operator in standard
+   *  C++, we have to use a template to emulate it.
    */
 
 #ifdef __cplusplus
-#define FT_ASSIGNP( p, val )  *((void**)&(p)) = (val)
+
+  extern "C++"
+  template <typename T> inline T*
+  cplusplus_typeof(        T*,
+                    void  *v )
+  {
+    return static_cast <T*> ( v );
+  }
+
+#define FT_ASSIGNP( p, val )  (p) = cplusplus_typeof( (p), (val) )
+
 #else
+
 #define FT_ASSIGNP( p, val )  (p) = (val)
+
 #endif
 
 
@@ -333,8 +345,8 @@ FT_BEGIN_HEADER
               FT_ULong     size,
               FT_Error    *p_error );
 
-#define FT_MEM_STRDUP( dst, str )                                     \
-          (dst) = ft_mem_strdup( memory, (const char*)(str), &error )
+#define FT_MEM_STRDUP( dst, str )                                            \
+          (dst) = (char*)ft_mem_strdup( memory, (const char*)(str), &error )
 
 #define FT_STRDUP( dst, str )                           \
           FT_MEM_SET_ERROR( FT_MEM_STRDUP( dst, str ) )
