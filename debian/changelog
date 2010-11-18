@@ -1,3 +1,11 @@
+freetype (2.4.3-2slp2) unstable; urgency=low
+
+  * Add debug package
+  * Git: 165.213.180.234:/git/slp/unmodified/freetype
+  * Tag: freetype_2.4.3-2slp2
+
+ -- Deokjin Kim <deokjin81.kim@samsung.com>  Thu, 18 Nov 2010 14:58:43 +0900
+
 freetype (2.4.3-1slp2) unstable; urgency=low
 
   * Freetype version upgrade (from 2.3.5 to 2.4.3)  

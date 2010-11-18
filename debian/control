@@ -51,4 +51,17 @@ Description: FreeType 2 font engine, development files
  and documentation) you need to develop your own programs using the
  FreeType 2 library.
 
-
+Package: libfreetype6-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: ${misc:Depends},
+         libfreetype6 (= ${binary:Version})
+Conflicts: libfreetype6-dbg 
+Replaces: libfreetype6-dbg 
+Description: FreeType 2 font engine, debugging symbols
+ The FreeType project is a team of volunteers who develop free,
+ portable and high-quality software solutions for digital typography.
+ They specifically target embedded systems and focus on bringing small,
+ efficient and ubiquitous products.
+ .
