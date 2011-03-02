@@ -1,3 +1,11 @@
+freetype (2.4.3-4slp2) unstable; urgency=low
+
+  * Rollback removing API 
+  * Git: 165.213.180.234:slp/unmodified/freetype
+  * Tag: freetype_2.4.3-4slp2
+
+ -- Deokjin Kim <deokjin81.kim@samsung.com>  Wed, 02 Mar 2011 14:11:53 +0900
+
 freetype (2.4.3-3slp2) unstable; urgency=low
 
   * Reduce amount of memory usage
