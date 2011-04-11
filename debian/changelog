@@ -1,3 +1,11 @@
+freetype (2.4.3-5slp3) unstable; urgency=low
+
+  * Rollback pkgs
+  * Git: 165.213.180.234:/slp/unmodified/freetype
+  * Tag: freetype_2.4.3-5slp3
+
+ -- WooHyun Jung <wh0705.jung@samsung.com>  Mon, 11 Apr 2011 11:56:46 +0900
+
 freetype (2.4.3-5slp2) unstable; urgency=low
 
   * Removed unused modules
