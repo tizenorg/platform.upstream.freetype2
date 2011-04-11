@@ -1,6 +1,7 @@
 Source: freetype
 Section: libs
 Priority: optional
+Uploaders: WooHyun Jung <wh0705.jung@samsung.com>
 Maintainer: Deokjin Kim <deokjin81.kim@samsung.com>, Myoungwoon Kim <myoungwoon.kim@samsung.com>, Wonsik Jung <sidein@samsung.com>, Sanghyun Park <sh.ad.park@samsung.com>
 Build-Depends: debhelper (>= 5), autotools-dev
 Standards-Version: 3.7.2
