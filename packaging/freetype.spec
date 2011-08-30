@@ -99,5 +99,5 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.{a,la}
 %{_includedir}/*.h
 %{_libdir}/libfreetype.so
 %{_bindir}/freetype-config
-%{_libdir}/pkgconfig/
+%{_libdir}/pkgconfig/*.pc
 
