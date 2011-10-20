@@ -1,3 +1,11 @@
+freetype (2.4.3-5slp2+1) unstable; urgency=low
+
+  * Fix text display bug in m.etnews.com
+  * Git: 165.213.180.234:/slp/unmodified/freetype
+  * Tag: freetype_2.4.3-5slp2+1
+
+ -- Deokjin Kim <deokjin81.kim@samsung.com>  Thu, 20 Oct 2011 16:17:50 +0900
+
 freetype (2.4.3-5slp4) unstable; urgency=low
 
   * Packag Rollback
