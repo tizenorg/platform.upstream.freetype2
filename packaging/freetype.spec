@@ -1,11 +1,12 @@
 Name:       freetype
 Summary:    A free and portable font rendering engine
 Version:    2.4.9
-Release:    2
+Release:    3
 Group:      System/Libraries
 License:    FTL or GPLv2+
 URL:        http://www.freetype.org
 Source0:    http://download.savannah.gnu.org/releases-noredirect/freetype/freetype-%{version}.tar.gz
+Source1001: packaging/freetype.manifest
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 Provides:   %{name}-bytecode
@@ -41,6 +42,7 @@ FreeType.
 %setup -q
 
 %build
+cp %{SOURCE1001} .
 
 %configure --disable-static
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' builds/unix/libtool
@@ -88,10 +90,12 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.{a,la}
 %postun -p /sbin/ldconfig
 
 %files
+%manifest freetype.manifest
 %defattr(-,root,root,-)
 %{_libdir}/libfreetype.so.*
 
 %files devel
+%manifest freetype.manifest
 %defattr(-,root,root,-)
 %dir %{_includedir}/freetype2
 %{_datadir}/aclocal/freetype2.m4
