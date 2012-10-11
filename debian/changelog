@@ -1,3 +1,11 @@
+freetype (2.4.9-slp2+4) unstable; urgency=low
+
+  * Add license file
+  * Git: framework/graphics/freetype
+  * Tag: freetype_2.4.9-slp2+4
+
+ -- Seongwon Cho <seongwon1.cho@samsung.com>  Wed, 10 Oct 2012 20:06:08 +0900
+
 freetype (2.4.9-slp2+1) unstable; urgency=low
 
   * FT2 version upgrade from 2.4.3 to 2.4.9
