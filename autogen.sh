@@ -153,7 +153,7 @@ sed -e "s;@VERSION@;$freetype_major$freetype_minor$freetype_patch;" \
   < configure.raw > configure.ac
 
 run aclocal -I . --force
-run $LIBTOOLIZE --force --copy --install
+run $LIBTOOLIZE --force --copy
 run autoconf --force
 
 chmod +x mkinstalldirs

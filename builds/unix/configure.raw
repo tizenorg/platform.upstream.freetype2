@@ -673,7 +673,7 @@ AC_SUBST([FT2_EXTRA_LIBS])
 AC_SUBST([SYSTEM_ZLIB])
 
 
-LT_INIT(win32-dll)
+#LT_INIT(win32-dll)
 
 AC_SUBST([hardcode_libdir_flag_spec])
 AC_SUBST([wl])
