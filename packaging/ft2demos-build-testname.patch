@@ -1,0 +1,13 @@
+Index: ft2demos-2.4.3/Makefile
+===================================================================
+--- ft2demos-2.4.3.orig/Makefile	2009-10-07 09:57:21.000000000 +0200
++++ ft2demos-2.4.3/Makefile	2010-10-29 16:24:24.770446520 +0200
+@@ -482,7 +482,7 @@ else
+ 	  $(LINK)
+ 
+   $(BIN_DIR_2)/testname$E: $(OBJ_DIR_2)/testname.$(SO) $(FTLIB)
+-	  $(LINK)
++	  $(LINK_COMMON)
+ 
+ 
+   $(BIN_DIR_2)/ftview$E: $(OBJ_DIR_2)/ftview.$(SO) $(FTLIB) \

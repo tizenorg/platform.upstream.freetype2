@@ -1,0 +1,21 @@
+--- builds/unix/freetype-config.in.orig	2010-12-04 21:17:24.000000000 +0100
++++ builds/unix/freetype-config.in	2010-12-04 21:20:02.000000000 +0100
+@@ -16,7 +16,6 @@
+ libdir=@libdir@
+ enable_shared=@build_libtool_libs@
+ wl=@wl@
+-hardcode_libdir_flag_spec='@hardcode_libdir_flag_spec@'
+ 
+ usage()
+ {
+@@ -140,10 +139,6 @@
+ fi
+ 
+ if test "$echo_libs" = "yes" ; then
+-  rpath=
+-  if test "$enable_shared" = "yes" ; then
+-    eval "rpath=\"$hardcode_libdir_flag_spec\""
+-  fi
+   libs="-lfreetype @LIBZ@ @LIBBZ2@ @FT2_EXTRA_LIBS@"
+   if test "${SYSROOT}$libdir" != "/usr/lib" && test "${SYSROOT}$libdir" != "/usr/lib64"; then
+     echo -L${SYSROOT}$libdir $libs
