@@ -5,7 +5,7 @@ Version:        2.4.9
 Release:        0
 Summary:        A TrueType Font Library
 License:        Freetype or GPL-2.0+
-Group:          System/Libraries
+Group:          Graphics/Font Management
 Url:            http://www.freetype.org
 Source0:        http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
 Source2:        baselibs.conf
@@ -16,7 +16,7 @@ version also contains an autohinter for producing improved output.
 
 %package -n libfreetype
 Summary:        A TrueType Font Library
-Group:          System/Libraries
+Group:          Graphics/Font Management
 
 %description -n libfreetype
 This library features TrueType fonts for open source projects. This
@@ -24,7 +24,7 @@ version also contains an autohinter for producing improved output.
 
 %package devel
 Summary:        Development environment for the freetype2 TrueType font library
-Group:          Development/Libraries/C and C++
+Group:          Development/Libraries
 Requires:       libfreetype = %{version}
 Requires:       zlib-devel
 Provides:       freetype-devel
