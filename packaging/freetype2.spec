@@ -9,6 +9,7 @@ Group:          Graphics/Font Management
 Url:            http://www.freetype.org
 Source0:        http://download.savannah.gnu.org/releases/freetype/freetype-%{version}.tar.bz2
 Source2:        baselibs.conf
+Source1001: 	freetype2.manifest
 
 %description
 This library features TrueType fonts for open source projects. This
@@ -39,6 +40,7 @@ It also contains a small tutorial for using that library.
 %prep
 %define enable_subpixel_rendering 0
 %setup -q -n freetype-%{version} 
+cp %{SOURCE1001} .
 
 %build
 export CFLAGS="%optflags -std=gnu99 -D_GNU_SOURCE"
@@ -56,10 +58,12 @@ rm docs/INSTALL*
 %postun -n libfreetype -p /sbin/ldconfig
 
 %files -n libfreetype
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_libdir}/libfreetype.so.*
 
 %files devel
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_includedir}/*
 %{_libdir}/libfreetype.so
