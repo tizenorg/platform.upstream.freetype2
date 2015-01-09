@@ -1,7 +1,0 @@
-@PREFIX@/bin/freetype-config
-@PREFIX@/include/
-@PREFIX@/lib/*.so
-@PREFIX@/lib/*.la
-@PREFIX@/lib/*.a
-@PREFIX@/lib/pkgconfig/
-@PREFIX@/share/aclocal/

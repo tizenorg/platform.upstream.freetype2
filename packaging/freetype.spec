@@ -1,12 +1,14 @@
 Name:       freetype
 Summary:    A free and portable font rendering engine
-Version:    2.4.9
-Release:    4
+Version:    2.5.5
+Release:    1
 Group:      System/Libraries
 License:    FTL or GPLv2+
 URL:        http://www.freetype.org
 Source0:    http://download.savannah.gnu.org/releases-noredirect/freetype/freetype-%{version}.tar.gz
 Source1001: packaging/freetype.manifest
+BuildRequires:  which
+BuildRequires:  pkgconfig(libpng)
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 Provides:   %{name}-bytecode
@@ -64,9 +66,9 @@ cat docs/FTL.TXT > %{buildroot}/usr/share/license/%{name}
 %define wordsize 32
 %endif
 
-mv $RPM_BUILD_ROOT%{_includedir}/freetype2/freetype/config/ftconfig.h \
-$RPM_BUILD_ROOT%{_includedir}/freetype2/freetype/config/ftconfig-%{wordsize}.h
-cat >$RPM_BUILD_ROOT%{_includedir}/freetype2/freetype/config/ftconfig.h <<EOF
+mv $RPM_BUILD_ROOT%{_includedir}/freetype2/config/ftconfig.h \
+$RPM_BUILD_ROOT%{_includedir}/freetype2/config/ftconfig-%{wordsize}.h
+cat >$RPM_BUILD_ROOT%{_includedir}/freetype2/config/ftconfig.h <<EOF
 #ifndef __FTCONFIG_H__MULTILIB
 #define __FTCONFIG_H__MULTILIB
 
@@ -103,8 +105,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.{a,la}
 %dir %{_includedir}/freetype2
 %{_datadir}/aclocal/freetype2.m4
 %{_includedir}/freetype2/*
-%{_includedir}/*.h
 %{_libdir}/libfreetype.so
 %{_bindir}/freetype-config
 %{_libdir}/pkgconfig/*.pc
+%{_datadir}/man/man1/*
 
