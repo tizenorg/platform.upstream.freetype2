@@ -65,7 +65,7 @@ cat docs/FTL.TXT > %{buildroot}/usr/share/license/%{name}
 
 
 # fix multilib issues
-%ifarch x86_64 s390x ia64 ppc64 alpha sparc64
+%ifarch x86_64 s390x ia64 ppc64 alpha sparc64 aarch64
 %define wordsize 64
 %else
 %define wordsize 32
