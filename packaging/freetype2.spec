@@ -3,7 +3,7 @@ Summary:        A free and portable font rendering engine
 Version:        2.5.5
 Release:        1
 Group:          Graphics/Font Management
-License:        Freetype or GPL-2.0+
+License:        FTL or GPL-2.0+
 Url:            http://www.freetype.org
 Source0:        http://download.savannah.gnu.org/releases-noredirect/freetype/freetype-%{version}.tar.gz
 Source1001:     packaging/freetype2.manifest
